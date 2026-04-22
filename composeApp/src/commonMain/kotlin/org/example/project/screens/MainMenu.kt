@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
@@ -29,14 +29,14 @@ fun MainMenu(navigateTo2: () -> Unit, navigateTo3: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Memory Game")
+        Text("Memory Game", style = MaterialTheme.typography.headlineLarge)
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(20.dp))
         Button(
             onClick = navigateTo2,
             modifier = Modifier.width(150.dp)
         ) {
-            Text("Play") //lleva a elegir baraja y tipo de juego
+            Text("Play", style = MaterialTheme.typography.headlineMedium) //lleva a elegir baraja y tipo de juego
         }
 
         Spacer(Modifier.height(8.dp))
@@ -44,7 +44,7 @@ fun MainMenu(navigateTo2: () -> Unit, navigateTo3: () -> Unit) {
             onClick = navigateTo3,
             modifier = Modifier.width(150.dp)
         ) {
-            Text("Stats") //maximo score y el minimo timepo en acabar una partida
+            Text("Stats", style = MaterialTheme.typography.headlineMedium) //maximo score y el minimo timepo en acabar una partida
         }
 
 
