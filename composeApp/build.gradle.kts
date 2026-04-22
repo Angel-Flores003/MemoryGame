@@ -105,6 +105,8 @@ dependencies {
 
     testImplementation(libs.androidx.core.testing)
     testImplementation(kotlin("test"))
+    //Search bar
+    implementation("androidx.compose.material:material-icons-extended:1.7.6")
 }
 
 compose.desktop {

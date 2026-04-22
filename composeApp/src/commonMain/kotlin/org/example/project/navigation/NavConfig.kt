@@ -9,7 +9,7 @@ import kotlinx.serialization.modules.polymorphic
 val navConfig = SavedStateConfiguration {
     serializersModule = SerializersModule {
         polymorphic(NavKey::class) {
-            subclass(Route.Pantalla1::class, Route.Pantalla1.serializer())
+            subclass(Route.MainMenu::class, Route.MainMenu.serializer())
             subclass(Route.Pantalla2::class, Route.Pantalla2.serializer())
             subclass(Route.Pantalla3::class, Route.Pantalla3.serializer())
         }

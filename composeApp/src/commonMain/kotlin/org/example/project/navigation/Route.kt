@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 sealed class Route: NavKey {
     @Serializable
-    data object Pantalla1 : Route()
+    data object MainMenu : Route()
     @Serializable
     data object Pantalla2 : Route()
     @Serializable
