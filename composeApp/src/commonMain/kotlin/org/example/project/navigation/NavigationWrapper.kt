@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import org.example.project.screens.GameMenu
+import org.example.project.screens.GameScreen
 import org.example.project.screens.MainMenu
-import org.example.project.screens.Pantalla2Screen
-import org.example.project.screens.Pantalla3Screen
+import org.example.project.screens.Results
+import org.example.project.screens.Stats
 
 @Composable
 fun NavigationWrapper(){
@@ -17,15 +19,24 @@ fun NavigationWrapper(){
         entryProvider = entryProvider {
             entry<Route.MainMenu> {
                 MainMenu(
-                    navigateTo2 = { backStack.add(Route.Pantalla2) },
-                    navigateTo3 = { backStack.add(Route.Pantalla3(userId = "user_42")) }
+                    navigateToGameMenu = { backStack.add(Route.GameMenu) },
+                    navigateToStats = { backStack.add(Route.Stats(userId = "user_42")) }
                 )
             }
-            entry<Route.Pantalla2> {
-                Pantalla2Screen(navigateBack = { backStack.removeLastOrNull() })
+            entry<Route.GameMenu> {
+                GameMenu(
+                    navigateBack = { backStack.removeLastOrNull() },
+                    navigateToGameScreen = {backStack.add(Route.GameScreen)}
+                )
             }
-            entry<Route.Pantalla3> { key ->
-                Pantalla3Screen(userId = key.userId, navigateBack = { backStack.removeLastOrNull() })
+            entry<Route.Stats> { key ->
+                Stats(userId = key.userId, navigateBack = { backStack.removeLastOrNull() })
+            }
+            entry<Route.GameScreen> {
+                GameScreen(navigateToResults = {backStack.add(Route.Results)})
+            }
+            entry<Route.Results> {
+                Results(navigateBack = {backStack.add(Route.MainMenu)})
             }
         }
     )

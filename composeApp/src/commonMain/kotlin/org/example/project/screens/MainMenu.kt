@@ -16,6 +16,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.aakira.napier.Napier
 import kotlinproject.composeapp.generated.resources.Res
@@ -23,28 +24,32 @@ import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun MainMenu(navigateTo2: () -> Unit, navigateTo3: () -> Unit) {
+fun MainMenu(navigateToGameMenu: () -> Unit, navigateToStats: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Memory Game", style = MaterialTheme.typography.headlineLarge)
+        Text(
+            "Memory Game",
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold
+        )
 
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(50.dp))
         Button(
-            onClick = navigateTo2,
+            onClick = navigateToGameMenu,
             modifier = Modifier.width(150.dp)
         ) {
-            Text("Play", style = MaterialTheme.typography.headlineMedium) //lleva a elegir baraja y tipo de juego
+            Text("Select game", style = MaterialTheme.typography.bodyLarge) //lleva a elegir baraja y tipo de juego
         }
 
         Spacer(Modifier.height(8.dp))
         Button(
-            onClick = navigateTo3,
+            onClick = navigateToStats,
             modifier = Modifier.width(150.dp)
         ) {
-            Text("Stats", style = MaterialTheme.typography.headlineMedium) //maximo score y el minimo timepo en acabar una partida
+            Text("Stats", style = MaterialTheme.typography.bodyLarge) //maximo score y el minimo timepo en acabar una partida
         }
 
 

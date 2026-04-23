@@ -7,7 +7,11 @@ sealed class Route: NavKey {
     @Serializable
     data object MainMenu : Route()
     @Serializable
-    data object Pantalla2 : Route()
+    data object GameMenu : Route()
     @Serializable
-    data class Pantalla3(val userId: String) : Route()
+    data class Stats(val userId: String) : Route()
+    @Serializable
+    data object GameScreen : Route()
+    @Serializable
+    data object Results : Route()
 }
