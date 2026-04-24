@@ -42,11 +42,12 @@ fun GameMenu(navigateBack: () -> Unit, navigateToGameScreen: () -> Unit) {
         var selectedOption by remember { mutableStateOf(options[0]) }
         //Elegir dificultad
         var expanded2 by remember {mutableStateOf(false)}
-        val options2 = listOf("Tutorial", "Easy", "Medium", "Hard", "Insane")
+        val options2 = listOf("Tutorial", "Easy", "Medium", "Hard", "Insane")//4, 8, 16, 32, 64
         var selectedOption2 by remember {mutableStateOf(options2[0])}
 
+        // Elegir cantidad jugadores
         Box {
-            Button(onClick = { expanded = true }, modifier = Modifier.width(100.dp)) {
+            Button(onClick = { expanded = true }, modifier = Modifier.width(150.dp)) {
                 Text(
                     selectedOption,
                     style = MaterialTheme.typography.bodyLarge
@@ -64,10 +65,10 @@ fun GameMenu(navigateBack: () -> Unit, navigateToGameScreen: () -> Unit) {
                 }
             }
         }
-
+        //Elegir dificultad
         Spacer(Modifier.height(8.dp))
         Box {
-            Button(onClick = { expanded2 = true }, modifier = Modifier.width(100.dp)) {
+            Button(onClick = { expanded2 = true }, modifier = Modifier.width(150.dp)) {
                 Text(
                     selectedOption2,
                     style = MaterialTheme.typography.bodyLarge
@@ -87,7 +88,7 @@ fun GameMenu(navigateBack: () -> Unit, navigateToGameScreen: () -> Unit) {
         }
 
         Spacer(Modifier.height(8.dp))
-        Button(onClick = navigateToGameScreen, modifier = Modifier.width(100.dp)) {
+        Button(onClick = { navigateToGameScreen(selectedOption, selectedOption2) }, modifier = Modifier.width(150.dp)) {
             Text(
                 "Play",
                 style = MaterialTheme.typography.bodyLarge
