@@ -23,7 +23,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun GameMenu(navigateBack: () -> Unit, navigateToGameScreen: () -> Unit) {
+fun GameMenu(
+    navigateBack: () -> Unit,
+    navigateToGameScreen: (opcio1: String, opcio2: String) -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -88,7 +91,8 @@ fun GameMenu(navigateBack: () -> Unit, navigateToGameScreen: () -> Unit) {
         }
 
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { navigateToGameScreen(selectedOption, selectedOption2) }, modifier = Modifier.width(150.dp)) {
+        Button(onClick = { navigateToGameScreen(selectedOption, selectedOption2) },
+            modifier = Modifier.width(150.dp)) {
             Text(
                 "Play",
                 style = MaterialTheme.typography.bodyLarge

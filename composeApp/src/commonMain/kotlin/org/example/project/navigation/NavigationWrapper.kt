@@ -26,17 +26,19 @@ fun NavigationWrapper(){
             entry<Route.GameMenu> {
                 GameMenu(
                     navigateBack = { backStack.removeLastOrNull() },
-                    navigateToGameScreen = {backStack.add(Route.GameScreen(selectedOption = "", selectedOption2 = ""))}
+                    navigateToGameScreen = { option1, option2 ->
+                        backStack.add(Route.GameScreen(selectedOption = option1, selectedOption2 = option2))
+                    }
                 )
             }
             entry<Route.Stats> { key ->
                 Stats(userId = key.userId, navigateBack = { backStack.removeLastOrNull() })
             }
-            entry<Route.GameScreen> {
+            entry<Route.GameScreen> { routeData ->
                 GameScreen(
-                    navigateToResults = {backStack.add(Route.Results)},
-                    selectedOption: String,
-                    selectedOption2: String
+                    navigateToResults = { backStack.add(Route.Results)},
+                    selectedOption = routeData.selectedOption,
+                    selectedOption2 = routeData.selectedOption2
                 )
             }
             entry<Route.Results> {
