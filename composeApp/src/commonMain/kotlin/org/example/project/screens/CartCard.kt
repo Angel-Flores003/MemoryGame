@@ -20,17 +20,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import kotlinproject.composeapp.generated.resources.eve
+import kotlinproject.composeapp.generated.resources.hsrlogo
+import kotlinproject.composeapp.generated.resources.ponpon
 import org.example.project.data.local.Carta
 import org.jetbrains.compose.resources.painterResource
 
-@Composable
+/*@Composable
 fun CartaCard(
-
+    card: Carta
 ) {
     // 1. Estado para saber si la carta está volteada
     var rotated by remember { mutableStateOf(false) }
@@ -45,7 +47,7 @@ fun CartaCard(
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .size(150.dp, 200.dp) // Tamaño sugerido
+            .size(200.dp, 150.dp) // Tamaño sugerido
             .clickable { rotated = !rotated }
             .graphicsLayer {
                 // 3. Aplicamos la rotación en el eje Y
@@ -62,7 +64,7 @@ fun CartaCard(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(Res.drawable.compose_multiplatform),
+                    painter = painterResource(Res.drawable.hsrlogo),
                     contentDescription = "Example",
                     modifier = Modifier.fillMaxSize()
                 )
@@ -78,6 +80,52 @@ fun CartaCard(
                     painter = painterResource(Res.drawable.eve),
                     contentDescription = "Example",
                     modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+    }
+}*/
+
+@Composable
+fun CartaCard(
+    carta: Carta,
+    onClick: () -> Unit
+) {
+    // La animación ahora depende de si la carta está boca arriba O si ya fue encontrada
+    val rotation by animateFloatAsState(
+        targetValue = if (carta.estaBocaArriba || carta.estaEmparejada) 180f else 0f,
+        animationSpec = tween(durationMillis = 500),
+        label = "CardRotation"
+    )
+
+    Card(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(enabled = !carta.estaBocaArriba && !carta.estaEmparejada) { onClick() }
+            .graphicsLayer {
+                rotationY = rotation
+                cameraDistance = 12f * density
+            },
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        if (rotation <= 90f) {
+            // LADO GRIS (Cerrada)
+            Box(Modifier.fillMaxSize().background(Color.LightGray)){
+                Image(
+                    painter = painterResource(Res.drawable.hsrlogo),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+        } else {
+            // LADO IMAGEN (Abierta)
+            Box(Modifier.fillMaxSize().graphicsLayer { rotationY = 180f }) {
+                Image(
+                    painter = painterResource(carta.imagenFrontal),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
                 )
             }
         }

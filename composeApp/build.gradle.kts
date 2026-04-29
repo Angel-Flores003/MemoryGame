@@ -40,6 +40,15 @@ kotlin {
     wasmJs {
         browser()
         binaries.executable()
+
+        //
+        /*moduleName = "composeApp"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+            }
+        }
+        binaries.executable()*/
     }
     
     sourceSets {
@@ -69,6 +78,17 @@ kotlin {
             implementation(libs.kotlinx.coroutinesSwing)
 
             implementation("javazoom:jlayer:1.0.1")
+        }
+
+        //
+        val wasmJsMain by getting {
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3) // o material
+                implementation(compose.ui)
+                implementation(compose.components.resources) // Vital para tus fotos
+            }
         }
     }
 }
