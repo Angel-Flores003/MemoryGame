@@ -27,17 +27,39 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.acheron
-import kotlinproject.composeapp.generated.resources.cast
-import kotlinproject.composeapp.generated.resources.cire
+import kotlinproject.composeapp.generated.resources.aglaea
+import kotlinproject.composeapp.generated.resources.ashveil
+import kotlinproject.composeapp.generated.resources.aventurine
+import kotlinproject.composeapp.generated.resources.bailu
+import kotlinproject.composeapp.generated.resources.black_swan
+import kotlinproject.composeapp.generated.resources.castorice
+import kotlinproject.composeapp.generated.resources.ceridra
+import kotlinproject.composeapp.generated.resources.cipher
+import kotlinproject.composeapp.generated.resources.clara
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
+import kotlinproject.composeapp.generated.resources.cyrene
 import kotlinproject.composeapp.generated.resources.eve
+import kotlinproject.composeapp.generated.resources.firefly
+import kotlinproject.composeapp.generated.resources.fu_xuan
+import kotlinproject.composeapp.generated.resources.gallagher
+import kotlinproject.composeapp.generated.resources.himeko
 import kotlinproject.composeapp.generated.resources.hsrlogo
 import kotlinproject.composeapp.generated.resources.huohuo
 import kotlinproject.composeapp.generated.resources.hya
+import kotlinproject.composeapp.generated.resources.hysilens
+import kotlinproject.composeapp.generated.resources.jiaoqiu
+import kotlinproject.composeapp.generated.resources.jingliu
+import kotlinproject.composeapp.generated.resources.kafka
 import kotlinproject.composeapp.generated.resources.ling
+import kotlinproject.composeapp.generated.resources.moze
+import kotlinproject.composeapp.generated.resources.mydei
+import kotlinproject.composeapp.generated.resources.phainon
+import kotlinproject.composeapp.generated.resources.rappa
 import kotlinproject.composeapp.generated.resources.terreneitor
-import kotlinproject.composeapp.generated.resources.wolf
+import kotlinproject.composeapp.generated.resources.the_herta
+import kotlinproject.composeapp.generated.resources.tribbi
 import kotlinproject.composeapp.generated.resources.wolfnine
+import kotlinproject.composeapp.generated.resources.yao_guang
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.example.project.data.local.Carta
@@ -57,6 +79,8 @@ fun GameScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Spacer(modifier = Modifier.height(50.dp))
+        Text("P2")
         viewModel.ScreenGameByDificulty((selectedOption2))
 
         Button(onClick = { navigateToResults() },
@@ -79,13 +103,36 @@ fun GameGrid(rows: Int, cols: Int) {
         val imagenes = listOf(
             Res.drawable.eve,
             Res.drawable.acheron,
-            Res.drawable.cast,
-            Res.drawable.wolfnine,
-            Res.drawable.hya,
-            Res.drawable.cire,
-            Res.drawable.terreneitor,
             Res.drawable.ling,
-            Res.drawable.huohuo
+            Res.drawable.cyrene,
+            Res.drawable.castorice,
+            Res.drawable.wolfnine,
+            Res.drawable.jingliu,
+            Res.drawable.clara,
+            Res.drawable.phainon,
+            Res.drawable.rappa,
+            Res.drawable.yao_guang,
+            Res.drawable.firefly,
+            Res.drawable.fu_xuan,
+            Res.drawable.himeko,
+            Res.drawable.black_swan,
+            Res.drawable.gallagher,
+            Res.drawable.the_herta,
+            Res.drawable.aventurine,
+            Res.drawable.hysilens,
+            Res.drawable.mydei,
+            Res.drawable.jiaoqiu,
+            Res.drawable.aglaea,
+            Res.drawable.tribbi,
+            Res.drawable.terreneitor,
+            Res.drawable.bailu,
+            Res.drawable.kafka,
+            Res.drawable.huohuo,
+            Res.drawable.hya,
+            Res.drawable.ashveil,
+            Res.drawable.cipher,
+            Res.drawable.ceridra,
+            Res.drawable.moze,
         )
 
         // Tomamos las imágenes necesarias (totalCartas / 2) y las duplicamos
