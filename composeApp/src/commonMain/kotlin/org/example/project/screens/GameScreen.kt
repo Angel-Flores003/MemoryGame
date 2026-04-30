@@ -26,35 +26,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinproject.composeapp.generated.resources.Res
+import kotlinproject.composeapp.generated.resources.acheron
+import kotlinproject.composeapp.generated.resources.cast
+import kotlinproject.composeapp.generated.resources.cire
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import kotlinproject.composeapp.generated.resources.eve
 import kotlinproject.composeapp.generated.resources.hsrlogo
+import kotlinproject.composeapp.generated.resources.huohuo
+import kotlinproject.composeapp.generated.resources.hya
+import kotlinproject.composeapp.generated.resources.ling
+import kotlinproject.composeapp.generated.resources.terreneitor
+import kotlinproject.composeapp.generated.resources.wolf
+import kotlinproject.composeapp.generated.resources.wolfnine
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.example.project.data.local.Carta
 import org.example.project.navigation.Route
+import org.example.project.viewModel.MainViewModel
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun GameScreen(
     navigateToResults: () -> Unit,
     selectedOption: String,
-    selectedOption2: String
+    selectedOption2: String,
+    viewModel: MainViewModel
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        var score by remember { mutableStateOf(false) }
-
-        when (selectedOption2) {
-            "Tutorial" -> GameGrid(2, 2)
-            "Easy"     -> GameGrid(4, 2)
-            "Medium"   -> GameGrid(4, 4)
-            "Hard"     -> GameGrid(8, 4)
-            "Insane"   -> GameGrid(8, 8)
-        }
+        viewModel.ScreenGameByDificulty((selectedOption2))
 
         Button(onClick = { navigateToResults() },
             modifier = Modifier.width(150.dp)) {
@@ -66,39 +69,24 @@ fun GameScreen(
     }
 }
 
-/*@Composable
-fun GameGrid(rows: Int, cols: Int, ns: Int) {
-    Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
-        repeat(rows) {
-            Row(
-                modifier = Modifier
-                    .weight(1f) // Esto hace que cada fila mida lo mismo de alto
-                    .fillMaxWidth()
-            ) {
-                repeat(cols) {
-                    // Cada carta debe tener weight(1f) para repartirse el ancho
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(4.dp) // Espaciado entre cartas
-                    ) {
-                        CartaCard()
-                    }
-                }
-            }
-        }
-    }
-}*/
-
 @Composable
 fun GameGrid(rows: Int, cols: Int) {
     val scope = rememberCoroutineScope()
 
     // 1. Generamos el mazo de cartas solo cuando cambia el tamaño del juego
-    // Para este ejemplo, usamos hsr y eve. En juegos más grandes deberías tener una lista más larga.
     val totalCartas = rows * cols
     val mazoInicial = remember(rows, cols) {
-        val imagenes = listOf(Res.drawable.compose_multiplatform, Res.drawable.eve) // Añade más aquí
+        val imagenes = listOf(
+            Res.drawable.eve,
+            Res.drawable.acheron,
+            Res.drawable.cast,
+            Res.drawable.wolfnine,
+            Res.drawable.hya,
+            Res.drawable.cire,
+            Res.drawable.terreneitor,
+            Res.drawable.ling,
+            Res.drawable.huohuo
+        )
 
         // Tomamos las imágenes necesarias (totalCartas / 2) y las duplicamos
         val seleccionadas = imagenes.take(totalCartas / 2)
@@ -134,8 +122,11 @@ fun GameGrid(rows: Int, cols: Int) {
 
                                         if (carta1.imagenFrontal == carta2.imagenFrontal) {
                                             // ¡MATCH! Las marcamos como encontradas
-                                            mazoInicial[mazoInicial.indexOf(carta1)] = carta1.copy(estaEmparejada = true)
-                                            mazoInicial[mazoInicial.indexOf(carta2)] = carta2.copy(estaEmparejada = true)
+                                            scope.launch {
+                                                delay(1000)
+                                                mazoInicial[mazoInicial.indexOf(carta1)] = carta1.copy(estaEmparejada = true)
+                                                mazoInicial[mazoInicial.indexOf(carta2)] = carta2.copy(estaEmparejada = true)
+                                            }
                                         } else {
                                             // NO MATCH: Esperamos un poco y las giramos de vuelta
                                             scope.launch {

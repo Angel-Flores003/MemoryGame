@@ -9,9 +9,12 @@ import org.example.project.screens.GameScreen
 import org.example.project.screens.MainMenu
 import org.example.project.screens.Results
 import org.example.project.screens.Stats
+import org.example.project.viewModel.MainViewModel
 
 @Composable
-fun NavigationWrapper(){
+fun NavigationWrapper(
+    viewModel: MainViewModel
+){
     val backStack = rememberNavBackStack(navConfig, Route.MainMenu)
     NavDisplay(
         backStack = backStack,
@@ -38,7 +41,8 @@ fun NavigationWrapper(){
                 GameScreen(
                     navigateToResults = { backStack.add(Route.Results)},
                     selectedOption = routeData.selectedOption,
-                    selectedOption2 = routeData.selectedOption2
+                    selectedOption2 = routeData.selectedOption2,
+                    viewModel
                 )
             }
             entry<Route.Results> {
