@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.acheron
 import kotlinproject.composeapp.generated.resources.aglaea
@@ -143,6 +145,9 @@ fun GameGrid(rows: Int, cols: Int) {
             .toMutableStateList()
     }
 
+    // Esto devuelve true solo cuando TODAS las cartas están emparejadas
+    val hasGanado = mazoInicial.all { it.estaEmparejada }
+
     // 2. Lógica para controlar qué cartas están seleccionadas
     Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
         repeat(rows) { rowIndex ->
@@ -152,40 +157,51 @@ fun GameGrid(rows: Int, cols: Int) {
                     val carta = mazoInicial[index]
 
                     Box(modifier = Modifier.weight(1f).padding(4.dp)) {
-                        CartaCard(
-                            carta = carta,
-                            onClick = {
-                                // Lógica del juego al hacer click
-                                if (!carta.estaBocaArriba && !carta.estaEmparejada) {
-                                    // 1. Girar la carta
-                                    mazoInicial[index] = carta.copy(estaBocaArriba = true)
+                        if (!carta.estaEmparejada) {
+                            // Si NO está emparejada, mostramos la carta con su animación
+                            CartaCard(
+                                carta = carta,
+                                onClick = {
+                                    // Lógica del juego al hacer click
+                                    if (!carta.estaBocaArriba && !carta.estaEmparejada) {
+                                        // 1. Girar la carta
+                                        mazoInicial[index] = carta.copy(estaBocaArriba = true)
 
-                                    // 2. Comprobar si hay otra carta girada
-                                    val giradas = mazoInicial.filter { it.estaBocaArriba && !it.estaEmparejada }
+                                        // 2. Comprobar si hay otra carta girada
+                                        val giradas = mazoInicial.filter { it.estaBocaArriba && !it.estaEmparejada }
 
-                                    if (giradas.size == 2) {
-                                        val carta1 = giradas[0]
-                                        val carta2 = giradas[1]
+                                        if (giradas.size == 2) {
+                                            val carta1 = giradas[0]
+                                            val carta2 = giradas[1]
 
-                                        if (carta1.imagenFrontal == carta2.imagenFrontal) {
-                                            // ¡MATCH! Las marcamos como encontradas
-                                            scope.launch {
-                                                delay(1000)
-                                                mazoInicial[mazoInicial.indexOf(carta1)] = carta1.copy(estaEmparejada = true)
-                                                mazoInicial[mazoInicial.indexOf(carta2)] = carta2.copy(estaEmparejada = true)
-                                            }
-                                        } else {
-                                            // NO MATCH: Esperamos un poco y las giramos de vuelta
-                                            scope.launch {
-                                                delay(1000)
-                                                mazoInicial[mazoInicial.indexOf(carta1)] = carta1.copy(estaBocaArriba = false)
-                                                mazoInicial[mazoInicial.indexOf(carta2)] = carta2.copy(estaBocaArriba = false)
+                                            if (carta1.imagenFrontal == carta2.imagenFrontal) {
+                                                // ¡MATCH! Las marcamos como encontradas
+                                                scope.launch {
+                                                    delay(1000)
+                                                    mazoInicial[mazoInicial.indexOf(carta1)] = carta1.copy(estaEmparejada = true)
+                                                    mazoInicial[mazoInicial.indexOf(carta2)] = carta2.copy(estaEmparejada = true)
+                                                    if (mazoInicial.all { it.estaEmparejada }) {
+                                                        delay(500) // Para que no sea tan brusco
+                                                        //navigateToResults() // <--- Tu función
+                                                    }
+                                                }
+                                            } else {
+                                                // NO MATCH: Esperamos un poco y las giramos de vuelta
+                                                scope.launch {
+                                                    delay(1000)
+                                                    mazoInicial[mazoInicial.indexOf(carta1)] = carta1.copy(estaBocaArriba = false)
+                                                    mazoInicial[mazoInicial.indexOf(carta2)] = carta2.copy(estaBocaArriba = false)
+                                                }
                                             }
                                         }
                                     }
                                 }
-                            }
-                        )
+                            )
+                        } else {
+                            // Si ESTÁ emparejada, dibujamos un espacio vacío del mismo tamaño
+                            // Esto evita que las cartas se muevan de sitio.
+                            Box(Modifier.size(150.dp, 200.dp))
+                        }
                     }
                 }
             }
