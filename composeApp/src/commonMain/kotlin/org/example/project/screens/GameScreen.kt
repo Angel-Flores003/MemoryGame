@@ -16,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -83,20 +84,16 @@ fun GameScreen(
     ) {
         Spacer(modifier = Modifier.height(50.dp))
         Text("P2")
-        viewModel.ScreenGameByDificulty((selectedOption2))
-
-        Button(onClick = { navigateToResults() },
-            modifier = Modifier.width(150.dp)) {
-            Text(
-                "Go Results",
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
+        viewModel.ScreenGameByDificulty((selectedOption2), navigateToResults)
     }
 }
 
 @Composable
-fun GameGrid(rows: Int, cols: Int) {
+fun GameGrid(
+    rows: Int,
+    cols: Int,
+    navigateToResults: () -> Unit
+    ) {
     val scope = rememberCoroutineScope()
 
     // 1. Generamos el mazo de cartas solo cuando cambia el tamaño del juego
@@ -148,6 +145,15 @@ fun GameGrid(rows: Int, cols: Int) {
     // Esto devuelve true solo cuando TODAS las cartas están emparejadas
     val hasGanado = mazoInicial.all { it.estaEmparejada }
 
+
+
+    LaunchedEffect(hasGanado) {
+        if (hasGanado) {
+            delay(800)
+            navigateToResults()
+        }
+    }
+
     // 2. Lógica para controlar qué cartas están seleccionadas
     Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
         repeat(rows) { rowIndex ->
@@ -180,10 +186,8 @@ fun GameGrid(rows: Int, cols: Int) {
                                                     delay(1000)
                                                     mazoInicial[mazoInicial.indexOf(carta1)] = carta1.copy(estaEmparejada = true)
                                                     mazoInicial[mazoInicial.indexOf(carta2)] = carta2.copy(estaEmparejada = true)
-                                                    if (mazoInicial.all { it.estaEmparejada }) {
-                                                        delay(500) // Para que no sea tan brusco
-                                                        //navigateToResults() // <--- Tu función
-                                                    }
+
+
                                                 }
                                             } else {
                                                 // NO MATCH: Esperamos un poco y las giramos de vuelta

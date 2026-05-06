@@ -15,15 +15,15 @@ class MainViewModel() : ViewModel() {
 
 
     @Composable
-    fun ScreenGameByDificulty(selectedOption2: String) {
+    fun ScreenGameByDificulty(selectedOption2: String, navigateToResults: () -> Unit) {
 
 
         when (selectedOption2) {
-            "Tutorial" -> GameGrid(2, 2)
-            "Easy" -> GameGrid(4, 2)
-            "Medium" -> GameGrid(4, 4)
-            "Hard" -> GameGrid(8, 4)
-            "Insane" -> GameGrid(8, 8)
+            "Tutorial" -> GameGrid(2, 2, navigateToResults)
+            "Easy" -> GameGrid(4, 2, navigateToResults)
+            "Medium" -> GameGrid(4, 4, navigateToResults)
+            "Hard" -> GameGrid(8, 4, navigateToResults)
+            "Insane" -> GameGrid(8, 8, navigateToResults)
         }
     }
 }

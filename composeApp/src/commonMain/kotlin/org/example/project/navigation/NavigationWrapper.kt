@@ -10,6 +10,7 @@ import org.example.project.screens.MainMenu
 import org.example.project.screens.Results
 import org.example.project.screens.Stats
 import org.example.project.viewModel.MainViewModel
+//import androidx.navigation3.toRoute
 
 @Composable
 fun NavigationWrapper(
@@ -37,7 +38,9 @@ fun NavigationWrapper(
             entry<Route.Stats> { key ->
                 Stats(userId = key.userId, navigateBack = { backStack.removeLastOrNull() })
             }
+
             entry<Route.GameScreen> { routeData ->
+                //val gameArgs = backStackEntry.toRoute<Route.GameScreen>()
                 GameScreen(
                     navigateToResults = { backStack.add(Route.Results)},
                     selectedOption = routeData.selectedOption,

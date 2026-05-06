@@ -1,5 +1,6 @@
 package org.example.project.navigation
 
+import androidx.compose.ui.geometry.RoundRect
 import androidx.navigation3.runtime.NavKey
 import androidx.savedstate.serialization.SavedStateConfiguration
 import kotlinx.serialization.modules.SerializersModule
@@ -12,6 +13,7 @@ val navConfig = SavedStateConfiguration {
             subclass(Route.MainMenu::class, Route.MainMenu.serializer())
             subclass(Route.GameMenu::class, Route.GameMenu.serializer())
             subclass(Route.Stats::class, Route.Stats.serializer())
+            subclass(Route.Results::class, Route.Results.serializer())
         }
     }
 }

@@ -3,6 +3,8 @@ package org.example.project.navigation
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
+
+@Serializable
 sealed class Route: NavKey {
     @Serializable
     data object MainMenu : Route()
