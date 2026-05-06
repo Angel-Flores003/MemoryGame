@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
@@ -19,93 +20,99 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.example.project.viewModel.VMGameMenu
 
 @Composable
 fun GameMenu(
     navigateBack: () -> Unit,
-    navigateToGameScreen: (opcio1: String, opcio2: String) -> Unit
+    navigateToGameScreen: (players: String, difficulty: String) -> Unit,
+    vm: VMGameMenu
 ) {
     Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(Modifier.height(40.dp))
+        Text("Memory Game", style = MaterialTheme.typography.displaySmall)
 
-    }
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        // Elegir cantidad jugadores
-        var expanded by remember { mutableStateOf(false) }
-        val options = listOf("VS 1", "1 VS 1", "VS 3", "2 VS 2", "VS 4")
-        var selectedOption by remember { mutableStateOf(options[0]) }
-        //Elegir dificultad
-        var expanded2 by remember {mutableStateOf(false)}
-        val options2 = listOf("Tutorial", "Easy", "Medium", "Hard", "Insane")//4, 8, 16, 32, 64
-        var selectedOption2 by remember {mutableStateOf(options2[0])}
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Dropdown de Jugadores
+            MenuSelector(
+                label = "Players",
+                options = vm.playerOptions,
+                selectedOption = vm.selectedPlayers,
+                onOptionSelected = { vm.changePlayers(it) }
+            )
 
-        // Elegir cantidad jugadores
-        Box {
-            Button(onClick = { expanded = true }, modifier = Modifier.width(150.dp)) {
-                Text(
-                    selectedOption,
-                    style = MaterialTheme.typography.bodyLarge
-                )
+            Spacer(Modifier.height(16.dp))
+
+            // Dropdown de Dificultad
+            MenuSelector(
+                label = "Difficulty",
+                options = vm.difficultyOptions,
+                selectedOption = vm.selectedDifficulty,
+                onOptionSelected = { vm.changeDifficulty(it) }
+            )
+
+            Spacer(Modifier.height(32.dp))
+
+            // Botón PLAY
+            Button(
+                onClick = { navigateToGameScreen(vm.selectedPlayers, vm.selectedDifficulty) },
+                modifier = Modifier.width(200.dp).height(50.dp)
+            ) {
+                Text("Play", style = MaterialTheme.typography.titleLarge)
             }
-            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        }
+
+        // PARTE INFERIOR
+        Button(
+            onClick = navigateBack,
+            modifier = Modifier.padding(bottom = 16.dp)
+        ) {
+            Text("Back")
+        }
+    }
+}
+
+// Componente reutilizable para los desplegables
+@Composable
+fun MenuSelector(
+    label: String,
+    options: List<String>,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(label, style = MaterialTheme.typography.labelMedium)
+        Box {
+            Button(
+                onClick = { expanded = true },
+                modifier = Modifier.width(200.dp)
+            ) {
+                Text(selectedOption)
+            }
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
                 options.forEach { option ->
                     DropdownMenuItem(
                         text = { Text(option) },
                         onClick = {
-                            selectedOption = option
+                            onOptionSelected(option)
                             expanded = false
                         }
                     )
                 }
             }
         }
-        //Elegir dificultad
-        Spacer(Modifier.height(8.dp))
-        Box {
-            Button(onClick = { expanded2 = true }, modifier = Modifier.width(150.dp)) {
-                Text(
-                    selectedOption2,
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
-            DropdownMenu(expanded = expanded2, onDismissRequest = { expanded2 = false }) {
-                options2.forEach { option ->
-                    DropdownMenuItem(
-                        text = { Text(option) },
-                        onClick = {
-                            selectedOption2 = option
-                            expanded2 = false
-                        }
-                    )
-                }
-            }
-        }
-
-        Spacer(Modifier.height(8.dp))
-        Button(onClick = { navigateToGameScreen(selectedOption, selectedOption2) },
-            modifier = Modifier.width(150.dp)) {
-            Text(
-                "Play",
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
-    }
-
-    Column (
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
-    ){
-        Button(onClick = navigateBack) { Text("Back") }
-        Spacer(Modifier.height(25.dp))
     }
 }

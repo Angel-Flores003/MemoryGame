@@ -51,9 +51,6 @@ fun MainMenu(navigateToGameMenu: () -> Unit, navigateToStats: () -> Unit) {
         ) {
             Text("Stats", style = MaterialTheme.typography.bodyLarge) //maximo score y el minimo timepo en acabar una partida
         }
-
-
-
 //        Spacer(Modifier.height(8.dp))
 //        Image(painterResource(Res.drawable.compose_multiplatform), contentDescription = "Argo")
 //

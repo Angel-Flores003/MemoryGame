@@ -68,23 +68,32 @@ import kotlinx.coroutines.launch
 import org.example.project.data.local.Carta
 import org.example.project.navigation.Route
 import org.example.project.viewModel.MainViewModel
+import org.example.project.viewModel.VMGameScreen
 import org.jetbrains.compose.resources.painterResource
 
-@Composable
+/*@Composable
 fun GameScreen(
     navigateToResults: () -> Unit,
-    selectedOption: String,
-    selectedOption2: String,
-    viewModel: MainViewModel
+    navigateBack: () -> Unit,
+    player: String,
+    dificulty: String,
+    vm: VMGameScreen
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(50.dp))
-        Text("P2")
-        viewModel.ScreenGameByDificulty((selectedOption2), navigateToResults)
+        Spacer(modifier = Modifier.height(25.dp))
+        Row() {
+            Button(onClick = {navigateBack()}){
+                Text("Go back")
+            }
+            Spacer(modifier = Modifier.width(50.dp))
+            Text("${player}")
+        }
+
+        vm.ScreenGameByDificulty((dificulty), navigateToResults, vm)
     }
 }
 
@@ -92,7 +101,8 @@ fun GameScreen(
 fun GameGrid(
     rows: Int,
     cols: Int,
-    navigateToResults: () -> Unit
+    navigateToResults: () -> Unit,
+    vm: VMGameScreen
     ) {
     val scope = rememberCoroutineScope()
 
@@ -131,7 +141,7 @@ fun GameGrid(
             Res.drawable.ashveil,
             Res.drawable.cipher,
             Res.drawable.ceridra,
-            Res.drawable.moze,
+            Res.drawable.moze
         )
 
         // Tomamos las imágenes necesarias (totalCartas / 2) y las duplicamos
@@ -141,15 +151,13 @@ fun GameGrid(
             .mapIndexed { index, res -> Carta(id = index, imagenFrontal = res) }
             .toMutableStateList()
     }
-
     // Esto devuelve true solo cuando TODAS las cartas están emparejadas
     val hasGanado = mazoInicial.all { it.estaEmparejada }
 
-
+    var interactuable by remember { mutableStateOf(true) }
 
     LaunchedEffect(hasGanado) {
         if (hasGanado) {
-            delay(800)
             navigateToResults()
         }
     }
@@ -169,7 +177,7 @@ fun GameGrid(
                                 carta = carta,
                                 onClick = {
                                     // Lógica del juego al hacer click
-                                    if (!carta.estaBocaArriba && !carta.estaEmparejada) {
+                                    if (interactuable && !carta.estaBocaArriba && !carta.estaEmparejada) {
                                         // 1. Girar la carta
                                         mazoInicial[index] = carta.copy(estaBocaArriba = true)
 
@@ -177,6 +185,7 @@ fun GameGrid(
                                         val giradas = mazoInicial.filter { it.estaBocaArriba && !it.estaEmparejada }
 
                                         if (giradas.size == 2) {
+                                            interactuable = false
                                             val carta1 = giradas[0]
                                             val carta2 = giradas[1]
 
@@ -186,8 +195,7 @@ fun GameGrid(
                                                     delay(1000)
                                                     mazoInicial[mazoInicial.indexOf(carta1)] = carta1.copy(estaEmparejada = true)
                                                     mazoInicial[mazoInicial.indexOf(carta2)] = carta2.copy(estaEmparejada = true)
-
-
+                                                    interactuable = true
                                                 }
                                             } else {
                                                 // NO MATCH: Esperamos un poco y las giramos de vuelta
@@ -195,6 +203,7 @@ fun GameGrid(
                                                     delay(1000)
                                                     mazoInicial[mazoInicial.indexOf(carta1)] = carta1.copy(estaBocaArriba = false)
                                                     mazoInicial[mazoInicial.indexOf(carta2)] = carta2.copy(estaBocaArriba = false)
+                                                    interactuable = true
                                                 }
                                             }
                                         }
@@ -205,6 +214,83 @@ fun GameGrid(
                             // Si ESTÁ emparejada, dibujamos un espacio vacío del mismo tamaño
                             // Esto evita que las cartas se muevan de sitio.
                             Box(Modifier.size(150.dp, 200.dp))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}*/
+
+@Composable
+fun GameScreen(
+    navigateToResults: () -> Unit,
+    navigateBack: () -> Unit,
+    player: String,
+    difficulty: String,
+    vm: VMGameScreen
+) {
+    // Calculamos filas y columnas basándonos en la dificultad
+    val (rows, cols) = when (difficulty) {
+        "Tutorial" -> 2 to 2
+        "Easy" -> 4 to 2
+        "Medium" -> 4 to 4
+        "Hard" -> 8 to 4
+        "Insane" -> 8 to 8
+        else -> 4 to 4
+    }
+
+    // Inicializar el juego solo una vez al entrar
+    LaunchedEffect(difficulty) {
+        vm.prepararJuego(rows, cols)
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(onClick = navigateBack) { Text("Go back") }
+            Text(text = player, style = MaterialTheme.typography.headlineSmall)
+        }
+
+        GameGrid(
+            rows = rows,
+            cols = cols,
+            vm = vm,
+            onVictoria = navigateToResults
+        )
+    }
+}
+
+@Composable
+fun GameGrid(
+    rows: Int,
+    cols: Int,
+    vm: VMGameScreen,
+    onVictoria: () -> Unit
+) {
+    Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+        repeat(rows) { rowIndex ->
+            Row(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                repeat(cols) { colIndex ->
+                    val index = rowIndex * cols + colIndex
+
+                    // Verificamos que el índice existe para evitar errores de carga
+                    if (index < vm.mazo.size) {
+                        val carta = vm.mazo[index]
+
+                        Box(modifier = Modifier.weight(1f).padding(4.dp)) {
+                            if (!carta.estaEmparejada) {
+                                CartaCard(
+                                    carta = carta,
+                                    onClick = { vm.onCartaClicked(index, onVictoria) }
+                                )
+                            } else {
+                                // Hueco vacío si ya se emparejó
+                                Spacer(Modifier.fillMaxSize())
+                            }
                         }
                     }
                 }

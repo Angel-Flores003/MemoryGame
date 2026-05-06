@@ -20,12 +20,16 @@ import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import org.example.project.navigation.NavigationWrapper
 import org.example.project.viewModel.MainViewModel
+import org.example.project.viewModel.VMGameMenu
+import org.example.project.viewModel.VMGameScreen
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
         val viewModel = MainViewModel()
-        NavigationWrapper(viewModel)
+        val vmgScreen = VMGameScreen()
+        val vmgMenu = VMGameMenu()
+        NavigationWrapper(viewModel, vmgScreen, vmgMenu)
     }
 }

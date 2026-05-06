@@ -33,8 +33,8 @@ fun Results(navigateBack: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val Colorprincipal = Color(0xFFFF0000)
-        val ColorBrillo = Color(0xFFFFCCCC)
+        val Colorprincipal = Color(0xFF33A17D)
+        val ColorBrillo = Color(0xFF1EC991)//0xFFFFCCCC)
 
         val transition = rememberInfiniteTransition(label = "shimmer")
         val xOffset by transition.animateFloat(
@@ -57,7 +57,7 @@ fun Results(navigateBack: () -> Unit) {
             end = Offset(xOffset, 0f)
         )
         Text(
-            text = "Marvel Game",
+            text = "You Win",
 
             fontSize = 32.sp,
             fontWeight = FontWeight.Black,

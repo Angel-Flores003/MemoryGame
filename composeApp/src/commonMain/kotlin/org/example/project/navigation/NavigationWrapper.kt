@@ -10,11 +10,16 @@ import org.example.project.screens.MainMenu
 import org.example.project.screens.Results
 import org.example.project.screens.Stats
 import org.example.project.viewModel.MainViewModel
+import org.example.project.viewModel.VMGameMenu
+import org.example.project.viewModel.VMGameScreen
+
 //import androidx.navigation3.toRoute
 
 @Composable
 fun NavigationWrapper(
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    vmGameScreen: VMGameScreen,
+    vmGameMenu: VMGameMenu
 ){
     val backStack = rememberNavBackStack(navConfig, Route.MainMenu)
     NavDisplay(
@@ -32,7 +37,8 @@ fun NavigationWrapper(
                     navigateBack = { backStack.removeLastOrNull() },
                     navigateToGameScreen = { option1, option2 ->
                         backStack.add(Route.GameScreen(selectedOption = option1, selectedOption2 = option2))
-                    }
+                    },
+                    vmGameMenu
                 )
             }
             entry<Route.Stats> { key ->
@@ -40,12 +46,12 @@ fun NavigationWrapper(
             }
 
             entry<Route.GameScreen> { routeData ->
-                //val gameArgs = backStackEntry.toRoute<Route.GameScreen>()
                 GameScreen(
                     navigateToResults = { backStack.add(Route.Results)},
-                    selectedOption = routeData.selectedOption,
-                    selectedOption2 = routeData.selectedOption2,
-                    viewModel
+                    navigateBack = {backStack.add(Route.GameMenu)},
+                    player = routeData.selectedOption,
+                    difficulty = routeData.selectedOption2,
+                    vmGameScreen
                 )
             }
             entry<Route.Results> {
