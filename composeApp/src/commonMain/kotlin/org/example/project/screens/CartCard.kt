@@ -37,7 +37,7 @@ fun CartaCard(
     carta: Carta,
     onClick: () -> Unit
 ) {
-    // La animación ahora depende de si la carta está boca arriba O si ya fue encontrada
+    // La animación
     val rotation by animateFloatAsState(
         targetValue = if (carta.estaBocaArriba || carta.estaEmparejada) 180f else 0f,
         animationSpec = tween(durationMillis = 500),

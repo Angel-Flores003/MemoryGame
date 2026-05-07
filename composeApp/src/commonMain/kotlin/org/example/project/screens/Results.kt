@@ -46,7 +46,7 @@ fun Results(navigateBack: () -> Unit) {
             ),
             label = "desplazamiento"
         )
-// Creamos un degradado que usa tu color en los bordes y un tono más claro al centro
+        // Degradado
         val brush = Brush.linearGradient(
             colors = listOf(
                 Colorprincipal,

@@ -50,7 +50,6 @@ import org.example.project.data.local.Carta
 import org.example.project.screens.GameGrid
 
 class VMGameScreen : ViewModel() {
-    // Estado del mazo (observable por la UI)
     var mazo = mutableStateListOf<Carta>()
         private set
 
@@ -93,6 +92,8 @@ class VMGameScreen : ViewModel() {
         Res.drawable.moze
     )
 
+
+
     fun prepararJuego(rows: Int, cols: Int) {
         val totalCartas = rows * cols
         val seleccionadas = todasLasImagenes.take(totalCartas / 2)
@@ -105,7 +106,7 @@ class VMGameScreen : ViewModel() {
         interactuable = true
     }
 
-    fun onCartaClicked(index: Int, onVictoria: () -> Unit) {
+    fun onCartaClicked(index: Int, onVictoria: () -> Unit) {mazo
         val carta = mazo[index]
 
         if (interactuable && !carta.estaBocaArriba && !carta.estaEmparejada) {
@@ -149,4 +150,34 @@ class VMGameScreen : ViewModel() {
             mazo[index] = mazo[index].copy(estaBocaArriba = estaBocaArriba, estaEmparejada = estaEmparejada)
         }
     }
+
+
+
+    var listPlayers by mutableStateOf(listOf<String>())
+        private set
+
+    var indiceJugadorActual by mutableStateOf(0)
+        private set
+
+    fun configurePlayers(player: String) {
+        listPlayers = when (player) {
+            "VS 1" -> listOf("P1")
+            "1 VS 1" -> listOf("P1", "P2")
+            "VS 3" -> listOf("P1", "P2", "P3")
+            "2 VS 2" -> listOf("P1", "P3", "P2", "P4")
+            "VS 4" -> listOf("P1", "P2", "P3", "P4")
+            else -> listOf("Player")
+        }
+        indiceJugadorActual = 0
+    }
+
+    fun changeTurn() {
+        if (listPlayers.isNotEmpty()) {
+            indiceJugadorActual = (indiceJugadorActual + 1) % listPlayers.size
+        }
+    }
+
+    // Propiedad calculada segura
+    val nombreTurnoActual: String
+        get() = listPlayers.getOrElse(indiceJugadorActual) { "Cargando..." }
 }
