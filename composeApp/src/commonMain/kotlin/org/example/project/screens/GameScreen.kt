@@ -25,7 +25,7 @@ import kotlin.collections.get
 
 @Composable
 fun GameScreen(
-    navigateToResults: () -> Unit,
+    navigateToResults: (String) -> Unit,
     navigateBack: () -> Unit,
     player: String,
     difficulty: String,
@@ -78,7 +78,7 @@ fun GameScreen(
             rows = rows,
             cols = cols,
             vm = vm,
-            onVictoria = navigateToResults
+            onVictoria = navigateToResults()
         )
     }
 }

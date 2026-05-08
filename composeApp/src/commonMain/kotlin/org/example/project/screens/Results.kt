@@ -8,7 +8,9 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +29,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Results(navigateBack: () -> Unit) {
+fun Results(
+    score: String,
+    navigateBack: () -> Unit
+) {
+    val listResult = score.split(",").map {
+        val partes = it.split(":")
+        partes[0] to partes[1]//(nombre, puntos)
+    }
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -57,8 +66,7 @@ fun Results(navigateBack: () -> Unit) {
             end = Offset(xOffset, 0f)
         )
         Text(
-            text = "You Win",
-
+            text = "Ranking Final",
             fontSize = 32.sp,
             fontWeight = FontWeight.Black,
             color = Color.Black,
@@ -69,6 +77,12 @@ fun Results(navigateBack: () -> Unit) {
                 fontSize = 40.sp
             )
         )
+        listResult.forEachIndexed { index, (nombre, puntos) ->
+            Row(modifier = Modifier.padding(8.dp)) {
+                Text("${index + 1}. $nombre: ", fontWeight = FontWeight.Bold)
+                Text("$puntos puntos")
+            }
+        }
         Button(onClick = { navigateBack() },
             modifier = Modifier.width(150.dp)) {
             Text(

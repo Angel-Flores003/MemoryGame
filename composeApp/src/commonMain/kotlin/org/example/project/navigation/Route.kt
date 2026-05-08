@@ -15,5 +15,5 @@ sealed class Route: NavKey {
     @Serializable
     data class GameScreen(val selectedOption: String, val selectedOption2: String) : Route()
     @Serializable
-    data object Results : Route()
+    data class Results(val score: String) : Route()
 }

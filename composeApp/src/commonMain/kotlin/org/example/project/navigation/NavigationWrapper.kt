@@ -47,7 +47,8 @@ fun NavigationWrapper(
 
             entry<Route.GameScreen> { routeData ->
                 GameScreen(
-                    navigateToResults = { backStack.add(Route.Results)},
+                    navigateToResults = { finalScore ->
+                        backStack.add(Route.Results(score: finalScore))},
                     navigateBack = {backStack.add(Route.GameMenu)},
                     player = routeData.selectedOption,
                     difficulty = routeData.selectedOption2,
@@ -55,7 +56,8 @@ fun NavigationWrapper(
                 )
             }
             entry<Route.Results> {
-                Results(navigateBack = {backStack.add(Route.MainMenu)})
+                Results( score ->
+                navigateBack = {backStack.add(Route.MainMenu)})
             }
         }
     )

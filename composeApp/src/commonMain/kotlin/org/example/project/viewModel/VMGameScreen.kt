@@ -106,7 +106,7 @@ class VMGameScreen : ViewModel() {
         interactuable = true
     }
 
-    fun onCartaClicked(index: Int, onVictoria: () -> Unit) {mazo
+    fun onCartaClicked(index: Int, onVictoria: (String) -> Unit) {mazo
         val carta = mazo[index]
 
         if (interactuable && !carta.estaBocaArriba && !carta.estaEmparejada) {
@@ -127,17 +127,20 @@ class VMGameScreen : ViewModel() {
                         // ¡Match!
                         actualizarCarta(carta1, estaEmparejada = true)
                         actualizarCarta(carta2, estaEmparejada = true)
+                        sumPointsCurrentPlayer()//suma puntos al jugador actual
                     } else {
                         // No Match
                         actualizarCarta(carta1, estaBocaArriba = false)
                         actualizarCarta(carta2, estaBocaArriba = false)
+                        changeTurn()//cambia el turno
                     }
 
                     interactuable = true
 
                     // Comprobar victoria
                     if (mazo.all { it.estaEmparejada }) {
-                        onVictoria()
+                        val results = getResultsOrderbuPoints()
+                        onVictoria(results)
                     }
                 }
             }
@@ -159,6 +162,9 @@ class VMGameScreen : ViewModel() {
     var indiceJugadorActual by mutableStateOf(0)
         private set
 
+    var pointsByPlayer by mutableStateOf(mapOf<String, Int>())
+        private set
+
     fun configurePlayers(player: String) {
         listPlayers = when (player) {
             "VS 1" -> listOf("P1")
@@ -168,6 +174,7 @@ class VMGameScreen : ViewModel() {
             "VS 4" -> listOf("P1", "P2", "P3", "P4")
             else -> listOf("Player")
         }
+        pointsByPlayer = listPlayers.associateWith { 0 }
         indiceJugadorActual = 0
     }
 
@@ -180,4 +187,17 @@ class VMGameScreen : ViewModel() {
     // Propiedad calculada segura
     val nombreTurnoActual: String
         get() = listPlayers.getOrElse(indiceJugadorActual) { "Cargando..." }
+
+    fun sumPointsCurrentPlayer() {
+        val currentName = listPlayers[indiceJugadorActual]
+        val currentPoints = pointsByPlayer[currentName] ?: 0
+        //actualizar el mapa de puntos
+        pointsByPlayer = pointsByPlayer + (currentName to currentPoints + 1)
+    }
+
+    fun getResultsOrderbuPoints(): String {
+        return pointsByPlayer.entries
+            .sortedByDescending { it.value }
+            .joinToString(separator = ",") {"${it.key}:${it.value}"}
+    }
 }
