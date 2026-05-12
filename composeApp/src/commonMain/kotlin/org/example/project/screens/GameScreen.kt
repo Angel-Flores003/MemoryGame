@@ -78,7 +78,7 @@ fun GameScreen(
             rows = rows,
             cols = cols,
             vm = vm,
-            onVictoria = navigateToResults()
+            onVictoria = navigateToResults
         )
     }
 }
@@ -88,7 +88,7 @@ fun GameGrid(
     rows: Int,
     cols: Int,
     vm: VMGameScreen,
-    onVictoria: () -> Unit
+    onVictoria: (String) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
         repeat(rows) { rowIndex ->
@@ -104,7 +104,12 @@ fun GameGrid(
                             if (!carta.estaEmparejada) {
                                 CartaCard(
                                     carta = carta,
-                                    onClick = { vm.onCartaClicked(index, onVictoria) }
+                                    //onClick = { vm.onCartaClicked(index, onVictoria) }
+                                    onClick = {
+                                        vm.onCartaClicked(index)
+                                        {
+                                            onVictoria(vm.pointsByPlayer.toString())
+                                        }}
                                 )
                             } else {
                                 // Hueco vacío si ya se emparejó

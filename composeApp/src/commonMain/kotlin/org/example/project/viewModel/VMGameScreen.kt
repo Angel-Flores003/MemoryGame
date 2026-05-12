@@ -192,7 +192,7 @@ class VMGameScreen : ViewModel() {
         val currentName = listPlayers[indiceJugadorActual]
         val currentPoints = pointsByPlayer[currentName] ?: 0
         //actualizar el mapa de puntos
-        pointsByPlayer = pointsByPlayer + (currentName to currentPoints + 1)
+        pointsByPlayer = pointsByPlayer + (currentName to currentPoints + 1)//pointsByPlayer = pointsByPlayer + (currentName to (currentPoints + 1))
     }
 
     fun getResultsOrderbuPoints(): String {
