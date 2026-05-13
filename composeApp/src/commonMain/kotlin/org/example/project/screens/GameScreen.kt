@@ -25,7 +25,7 @@ import kotlin.collections.get
 
 @Composable
 fun GameScreen(
-    navigateToResults: (String) -> Unit,
+    navigateToResults: (score: String) -> Unit,//navigateToResults: (String) -> Unit,
     navigateBack: () -> Unit,
     player: String,
     difficulty: String,
@@ -88,7 +88,7 @@ fun GameGrid(
     rows: Int,
     cols: Int,
     vm: VMGameScreen,
-    onVictoria: (String) -> Unit
+    onVictoria: (score: String) -> Unit//onVictoria: (String) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
         repeat(rows) { rowIndex ->
@@ -104,12 +104,7 @@ fun GameGrid(
                             if (!carta.estaEmparejada) {
                                 CartaCard(
                                     carta = carta,
-                                    //onClick = { vm.onCartaClicked(index, onVictoria) }
-                                    onClick = {
-                                        vm.onCartaClicked(index)
-                                        {
-                                            onVictoria(vm.pointsByPlayer.toString())
-                                        }}
+                                    onClick = { vm.onCartaClicked(index, onVictoria ) }
                                 )
                             } else {
                                 // Hueco vacío si ya se emparejó

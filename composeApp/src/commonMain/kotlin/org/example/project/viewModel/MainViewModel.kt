@@ -9,6 +9,5 @@ import androidx.lifecycle.ViewModel
 import org.example.project.screens.GameGrid
 
 class MainViewModel() : ViewModel() {
-    var score by mutableStateOf(false)
 
 }

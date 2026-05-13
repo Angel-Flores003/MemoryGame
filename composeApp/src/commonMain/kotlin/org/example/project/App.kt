@@ -27,9 +27,8 @@ import org.example.project.viewModel.VMGameScreen
 @Preview
 fun App() {
     MaterialTheme {
-        val viewModel = MainViewModel()
         val vmgScreen = VMGameScreen()
         val vmgMenu = VMGameMenu()
-        NavigationWrapper(viewModel, vmgScreen, vmgMenu)
+        NavigationWrapper(vmgScreen, vmgMenu)
     }
 }

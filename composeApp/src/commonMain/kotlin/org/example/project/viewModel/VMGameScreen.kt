@@ -106,7 +106,7 @@ class VMGameScreen : ViewModel() {
         interactuable = true
     }
 
-    fun onCartaClicked(index: Int, onVictoria: (String) -> Unit) {mazo
+    fun onCartaClicked(index: Int, onVictoria: (score: String) -> Unit) {mazo //onVictoria: (String) -> Unit
         val carta = mazo[index]
 
         if (interactuable && !carta.estaBocaArriba && !carta.estaEmparejada) {

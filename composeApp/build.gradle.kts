@@ -69,6 +69,8 @@ kotlin {
             implementation(libs.jetbrains.navigation3.ui)
             implementation(libs.kotlinx.serialization.core)
             implementation(libs.napier)
+            //toRoute
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -127,6 +129,9 @@ dependencies {
     testImplementation(kotlin("test"))
     //Search bar
     implementation("androidx.compose.material:material-icons-extended:1.7.6")
+    //toRoute
+    implementation("androidx.navigation:navigation-compose:2.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
 }
 
 compose.desktop {
