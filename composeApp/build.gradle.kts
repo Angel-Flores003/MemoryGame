@@ -55,6 +55,16 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
+
+            val commonTest by getting {
+                dependencies {
+                    implementation(kotlin("test"))
+
+                    // Esta es la forma correcta y corta:
+                    @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                    implementation(compose.uiTest)
+                }
+            }
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -71,9 +81,20 @@ kotlin {
             implementation(libs.napier)
             //toRoute
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+            //Aleix
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+
+            implementation(libs.kotlin.test)
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+            //IA
+            implementation(kotlin("test"))
+            //implementation(org.jetbrains.compose.ui:ui-test-junit4) // Para tests de UI
+            //Aleix
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -123,6 +144,8 @@ android {
 }
 
 dependencies {
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
     debugImplementation(libs.compose.uiTooling)
 
     testImplementation(libs.androidx.core.testing)
@@ -132,6 +155,10 @@ dependencies {
     //toRoute
     implementation("androidx.navigation:navigation-compose:2.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+    //test
+    testImplementation(libs.androidx.core.testing)
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.1")
+    testImplementation(kotlin("test"))
 }
 
 compose.desktop {

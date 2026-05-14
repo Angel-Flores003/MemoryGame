@@ -1,14 +1,9 @@
 package org.example.project.viewModel
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinproject.composeapp.generated.resources.Res
@@ -47,7 +42,6 @@ import kotlinproject.composeapp.generated.resources.yao_guang
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.example.project.data.local.Carta
-import org.example.project.screens.GameGrid
 
 class VMGameScreen : ViewModel() {
     var mazo = mutableStateListOf<Carta>()

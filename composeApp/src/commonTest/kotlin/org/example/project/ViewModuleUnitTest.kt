@@ -1,5 +1,8 @@
 package org.example.project
 
+import androidx.compose.ui.test.onNodeWithText
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.compose.viewModel
 import org.example.project.viewModel.VMGameMenu
 import org.example.project.viewModel.VMGameScreen
 import kotlin.test.BeforeTest
@@ -7,8 +10,9 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-class ComposeAppCommonTest {
 
+class ViewModuleUnitTest {
+    // Definimos la variable fuera para que setup() la pueda inicializar
     private lateinit var viewModelSceen: VMGameScreen
     private lateinit var viewModelMenu: VMGameMenu
 
@@ -31,7 +35,9 @@ class ComposeAppCommonTest {
     }
 
     @Test
-    fun example() {
-        assertEquals(3, 1 + 2)
+    fun testCounterIncrement() {
+        // Ejemplo de lógica: si llamamos a incrementar, ¿suma 1?
+        // viewModel.incrementCounter()
+        // assertEquals(1, viewModel.counterValue.value)
     }
 }
