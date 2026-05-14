@@ -19,7 +19,6 @@ import org.jetbrains.compose.resources.painterResource
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import org.example.project.navigation.NavigationWrapper
-import org.example.project.viewModel.MainViewModel
 import org.example.project.viewModel.VMGameMenu
 import org.example.project.viewModel.VMGameScreen
 

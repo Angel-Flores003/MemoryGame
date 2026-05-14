@@ -47,6 +47,9 @@ kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 androidx-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "archCoreTesting" }
 junit-junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
+#IA para testUI
+androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4-android", version = "1.6.0" }
+androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version = "1.6.0" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

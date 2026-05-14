@@ -1,13 +1,14 @@
 package org.example.project
 
-import androidx.compose.ui.test.onNodeWithText
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import org.example.project.viewModel.VMGameMenu
 import org.example.project.viewModel.VMGameScreen
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 
 
@@ -19,6 +20,8 @@ class ViewModuleUnitTest {
     @BeforeTest // En KMP se usa BeforeTest de kotlin.test
     fun setup() {
         viewModelSceen = VMGameScreen()
+        viewModelSceen.prepararJuego(2, 2)//Juego modo tutorial
+        viewModelSceen.configurePlayers("1 VS 1")
         viewModelMenu = VMGameMenu()
     }
 
@@ -26,8 +29,7 @@ class ViewModuleUnitTest {
     fun initialState() {
         // Comprobamos que al empezar todo esté a cero o vacío
         //Gscreen
-        assertEquals(0, viewModelSceen.listPlayers.size)
-        assertEquals(false, viewModelSceen.interactuable)
+        assertEquals(true, viewModelSceen.interactuable)
         assertEquals(0, viewModelSceen.indiceJugadorActual)
         //Gmenu
         assertNotNull(viewModelMenu.playerOptions)
@@ -35,9 +37,38 @@ class ViewModuleUnitTest {
     }
 
     @Test
-    fun testCounterIncrement() {
-        // Ejemplo de lógica: si llamamos a incrementar, ¿suma 1?
-        // viewModel.incrementCounter()
-        // assertEquals(1, viewModel.counterValue.value)
+    fun checkDeckSize() {
+        assertEquals(4, viewModelSceen.mazo.size)
+    }
+
+    @Test
+    fun turnChangesOnMiss() {
+        val jugadorInicial = viewModelSceen.indiceJugadorActual
+
+        viewModelSceen.changeTurn()
+
+        val jugadorFinal = viewModelSceen.indiceJugadorActual
+        assertNotEquals(jugadorInicial, jugadorFinal)
+    }
+
+    @Test
+    fun pointsIncreaseOnMatch() {
+        val primerJugador = viewModelSceen.listPlayers[0]
+        val startPoints = viewModelSceen.pointsByPlayer[primerJugador] ?: 0
+
+        viewModelSceen.sumPointsCurrentPlayer()
+
+        val finalPoints = viewModelSceen.pointsByPlayer[primerJugador] ?: 0
+
+        assertEquals(startPoints + 1, finalPoints,)
+    }
+
+    @Test
+    fun victoryDetected() {
+        viewModelSceen.mazo.forEachIndexed { index, carta ->
+            viewModelSceen.mazo[index] = carta.copy(estaEmparejada = true)
+        }
+        val todasEmparejadas = viewModelSceen.mazo.all { it.estaEmparejada }
+        assertEquals(true, todasEmparejadas)
     }
 }

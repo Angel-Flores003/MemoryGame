@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -18,7 +20,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -28,43 +30,24 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     jvm()
-    
+
     js {
         browser()
         binaries.executable()
     }
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
         binaries.executable()
-
-        //
-        /*moduleName = "composeApp"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-            }
-        }
-        binaries.executable()*/
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
-
-            val commonTest by getting {
-                dependencies {
-                    implementation(kotlin("test"))
-
-                    // Esta es la forma correcta y corta:
-                    @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                    implementation(compose.uiTest)
-                }
-            }
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -85,14 +68,10 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
         }
         commonTest.dependencies {
-            implementation(libs.kotlin.test)
-
-            implementation(libs.kotlin.test)
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
             //IA
             implementation(kotlin("test"))
-            //implementation(org.jetbrains.compose.ui:ui-test-junit4) // Para tests de UI
             //Aleix
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
         }
@@ -102,8 +81,6 @@ kotlin {
 
             implementation("javazoom:jlayer:1.0.1")
         }
-
-        //
         val wasmJsMain by getting {
             dependencies {
                 implementation(compose.runtime)
@@ -111,6 +88,15 @@ kotlin {
                 implementation(compose.material3) // o material
                 implementation(compose.ui)
                 implementation(compose.components.resources) // Vital para tus fotos
+            }
+        }
+        val androidAndroidTest by creating {
+            dependencies {
+                // Usamos la cadena de texto directa para evitar líos con el archivo TOML
+                implementation("androidx.compose.ui:ui-test-junit4-android:1.6.0")
+                implementation("androidx.compose.ui:ui-test-manifest:1.6.0")
+                // También necesitarás esta para que el test reconozca JUnit
+                implementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.23")
             }
         }
     }
